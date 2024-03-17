@@ -31,6 +31,47 @@ modules:
   ip_mib:
     walk: [ipv4InterfaceTable]
 
+  aerohive:
+    walk: [ahAssociationTable, ahRadioAttributeTable, ahRadioStatsTable, ahXIfTable, ahVIfStatsTable, ahSystem]
+    lookups:
+      - source_indexes: [ifIndex, ahClientMac]
+        lookup: ahClientIP
+      - source_indexes: [ifIndex, ahClientMac]
+        lookup: ahClientHostname
+      - source_indexes: [ifIndex]
+        lookup: ahRadioChannel
+      - source_indexes: [ifIndex]
+        lookup: ahSSIDName
+    overrides:
+      ahClientEncryptionMethod:
+        type: EnumAsInfo
+      ahClientAuthMethod:
+        type: EnumAsInfo
+      ahClientMACProtocol:
+        type: EnumAsInfo
+      ahClientSSID:
+        type: DisplayString
+      ahClientHostname:
+        type: DisplayString
+        ignore: true # Lookup metric
+      ahClientIP:
+        ignore: true # Lookup metric
+      ahClientMac:
+        ignore: true # Lookup metric
+      ahRadioChannel:
+        ignore: true # Lookup metric
+      ahSSIDName:
+        type: DisplayString
+        ignore: true # Lookup metric
+      ahIfMode:
+        type: EnumAsInfo
+      ahIfConfMode:
+        type: EnumAsInfo
+      ahIfType:
+        type: EnumAsInfo
+      ahIfName:
+        type: DisplayString
+
   readynas:
     walk:
       - 1.3.6.1.4.1.4526               # Raid/Disks status

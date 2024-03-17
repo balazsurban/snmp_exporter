@@ -31,6 +31,7 @@ ifeq ($(SELINUX_ENABLED),1)
   DOCKER_VOL_OPTS ?= :z
 endif
 
+AEROHIVE_URL      := https://raw.githubusercontent.com/librenms/librenms/master/mibs/aerohive
 APC_URL           := https://download.schneider-electric.com/files?p_enDocType=Firmware&p_File_Name=powernet451.mib&p_Doc_Ref=APC_POWERNETMIB_451_EN
 ARISTA_URL        := https://www.arista.com/assets/data/docs/MIBS
 CISCO_URL         := https://raw.githubusercontent.com/cisco/cisco-mibs/2d465cce2de4e67a3561d8e41e4c99b597558d4b/v2
@@ -109,6 +110,11 @@ docker-tag-latest:
 	docker tag "$(DOCKER_REPO)/$(DOCKER_IMAGE_NAME):$(SANITIZED_DOCKER_IMAGE_TAG)" "$(DOCKER_REPO)/$(DOCKER_IMAGE_NAME):latest"
 
 mibs: \
+  $(MIBDIR)/AH-INTERFACE-MIB \
+  $(MIBDIR)/AH-MRP-MIB \
+  $(MIBDIR)/AH-SMI-MIB \
+  $(MIBDIR)/AH-SYSTEM-MIB \
+  $(MIBDIR)/AH_TRAP_MIB \
   $(MIBDIR)/apc-powernet-mib \
   $(MIBDIR)/readynas \
   $(MIBDIR)/readydataos \
@@ -150,6 +156,26 @@ mibs: \
   $(MIBDIR)/CyberPower.MIB \
   $(MIBDIR)/EAP.MIB \
   $(MIBDIR)/EAP-Client.MIB
+
+$(MIBDIR)/AH-INTERFACE-MIB:
+	@echo ">> Downloading AH-INTERFACE-MIB"
+	@curl $(CURL_OPTS) -o $(MIBDIR)/AH-INTERFACE-MIB "$(AEROHIVE_URL)/AH-INTERFACE-MIB"
+
+$(MIBDIR)/AH-MRP-MIB:
+	@echo ">> Downloading AH-MRP-MIB"
+	@curl $(CURL_OPTS) -o $(MIBDIR)/AH-MRP-MIB "$(AEROHIVE_URL)/AH-MRP-MIB"
+
+$(MIBDIR)/AH-SMI-MIB:
+	@echo ">> Downloading AH-SMI-MIB"
+	@curl $(CURL_OPTS) -o $(MIBDIR)/AH-SMI-MIB "$(AEROHIVE_URL)/AH-SMI-MIB"
+
+$(MIBDIR)/AH-SYSTEM-MIB:
+	@echo ">> Downloading AH-SYSTEM-MIB"
+	@curl $(CURL_OPTS) -o $(MIBDIR)/AH-SYSTEM-MIB "$(AEROHIVE_URL)/AH-SYSTEM-MIB"
+
+$(MIBDIR)/AH_TRAP_MIB:
+	@echo ">> Downloading AH_TRAP_MIB"
+	@curl $(CURL_OPTS) -o $(MIBDIR)/AH_TRAP_MIB "$(AEROHIVE_URL)/AH_TRAP_MIB"
 
 $(MIBDIR)/apc-powernet-mib:
 	@echo ">> Downloading apc-powernet-mib"
